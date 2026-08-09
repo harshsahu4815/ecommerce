@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- ============================================================
+       SEO META TAGS — Edit for your store
+       ============================================================ -->
+  <title>Your Store | Shop Online</title>
+  <meta name="description" content="Browse our full product range and order online — fast delivery, easy checkout.">
+  <meta name="keywords" content="online store, buy online, ecommerce, shop">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://yourusername.github.io/your-repo/">
+
+  <!-- ============================================================
+       OPEN GRAPH TAGS — replace with your store's URL + image
+       ============================================================ -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Your Store | Shop Online">
+  <meta property="og:description" content="Browse our full product range and order online.">
+  <meta property="og:image" content="https://REPLACE-WITH-YOUR-STORE-BANNER-IMAGE.jpg">
+  <meta property="og:url" content="https://yourusername.github.io/your-repo/">
+  <meta property="og:site_name" content="Your Store">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" type="image/png" href="https://api.iconify.design/ph:storefront-fill.svg?color=%23c9a227">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <a href="#main-content" class="skip-link">Skip to content</a>
+
+  <!-- ============================================================
+       NAVBAR
+       ============================================================ -->
+  <header class="navbar">
+    <div class="navbar__inner">
+      <a href="index.html" class="navbar__brand">
+        <i data-lucide="store" class="navbar__brand-icon"></i>
+        <span>Your&nbsp;Store</span>
+      </a>
+
+      <nav class="navbar__links" id="navLinks">
+        <a href="index.html#products">Products</a>
+        <a href="index.html#contact">Contact</a>
+        <a href="admin.html">Admin</a>
+      </nav>
+
+      <div class="navbar__actions">
+        <button class="icon-btn" id="darkModeToggle" aria-label="Toggle dark mode" title="Toggle theme">
+          <i data-lucide="moon"></i>
+        </button>
+        <button class="icon-btn navbar__burger" id="navBurger" aria-label="Open menu" aria-expanded="false">
+          <i data-lucide="menu"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+
+    <!-- ============================================================
+         HERO
+         ============================================================ -->
+    <section class="hero">
+      <div class="hero__ambient" aria-hidden="true"></div>
+      <div class="hero__inner">
+        <p class="eyebrow eyebrow--center"><i data-lucide="sparkles"></i> Welcome</p>
+        <h1 class="hero__title">Shop the full collection</h1>
+        <p class="hero__subtitle">Hand-picked products, honest pricing, fast delivery. Browse below and order in a few taps.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         PRODUCT GRID — populated dynamically from products.json by js/main.js
+         ============================================================ -->
+    <section class="section-inner section-inner--wide" id="products">
+      <div id="productGrid" class="product-grid">
+        <!-- Product cards injected here by JavaScript -->
+      </div>
+
+      <!-- Shown by JS if products.json is empty or fails to load -->
+      <div id="emptyState" class="empty-state hidden">
+        <i data-lucide="package-search"></i>
+        <p>No products available right now. Please check back soon.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         CONTACT SECTION
+         ============================================================ -->
+    <section class="section-inner section-inner--narrow" id="contact">
+      <p class="eyebrow eyebrow--center">Get in touch</p>
+      <h2 class="section-title" style="text-align:center; margin: 0 auto;">Questions about an order?</h2>
+
+      <div class="product-grid" style="grid-template-columns: repeat(3, 1fr); margin-top: 40px;">
+        <a href="mailto:orders@REPLACE-WITH-YOUR-DOMAIN.com" class="product-card" style="align-items:center; text-align:center; padding: 28px 16px;">
+          <i data-lucide="mail" style="width:24px;height:24px;color:var(--accent-gold-bright);"></i>
+          <p style="margin-top:10px; font-weight:700;">Email Us</p>
+          <p style="color:var(--text-muted); font-size:0.85rem;">orders@REPLACE-WITH-YOUR-DOMAIN.com</p>
+        </a>
+        <a href="tel:+91XXXXXXXXXX" class="product-card" style="align-items:center; text-align:center; padding: 28px 16px;">
+          <i data-lucide="phone" style="width:24px;height:24px;color:var(--accent-gold-bright);"></i>
+          <p style="margin-top:10px; font-weight:700;">Call Us</p>
+          <p style="color:var(--text-muted); font-size:0.85rem;">+91 XXXXX XXXXX</p>
+        </a>
+        <a href="https://wa.me/91XXXXXXXXXX" target="_blank" rel="noopener noreferrer" class="product-card" style="align-items:center; text-align:center; padding: 28px 16px;">
+          <i data-lucide="message-circle" style="width:24px;height:24px;color:var(--accent-gold-bright);"></i>
+          <p style="margin-top:10px; font-weight:700;">WhatsApp</p>
+          <p style="color:var(--text-muted); font-size:0.85rem;">Chat with us directly</p>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============================================================
+       FOOTER
+       ============================================================ -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <div class="footer__brand">
+        <a href="index.html" class="navbar__brand">
+          <i data-lucide="store" class="navbar__brand-icon"></i>
+          <span>Your&nbsp;Store</span>
+        </a>
+        <p>Quality products, delivered with care.</p>
+      </div>
+
+      <div class="footer__links">
+        <h4>Explore</h4>
+        <a href="index.html#products">Products</a>
+        <a href="index.html#contact">Contact</a>
+        <a href="admin.html">Admin</a>
+      </div>
+
+      <div class="footer__social">
+        <h4>Follow Us</h4>
+        <div class="footer__social-icons">
+          <!-- ============================================================
+               SOCIAL LINKS — replace # with your actual profile URLs
+               ============================================================ -->
+          <a href="#" aria-label="Instagram" target="_blank" rel="noopener noreferrer"><i data-lucide="instagram"></i></a>
+          <a href="#" aria-label="Facebook" target="_blank" rel="noopener noreferrer"><i data-lucide="facebook"></i></a>
+          <a href="https://wa.me/91XXXXXXXXXX" aria-label="WhatsApp" target="_blank" rel="noopener noreferrer"><i data-lucide="message-circle"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p>&copy; <span id="footerYear"></span> Your Store. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <button id="scrollTopBtn" class="scroll-top" aria-label="Scroll to top">
+    <i data-lucide="arrow-up"></i>
+  </button>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/common.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

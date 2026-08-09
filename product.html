@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title id="pageTitle">Product | Your Store</title>
+  <meta name="description" id="pageDescription" content="View product details and order online.">
+  <meta name="robots" content="index, follow">
+
+  <!-- Open Graph tags are populated dynamically by js/product.js once the
+       product data loads (see updateMetaTags() in that file) -->
+  <meta property="og:type" content="product">
+  <meta property="og:site_name" content="Your Store">
+
+  <link rel="icon" type="image/png" href="https://api.iconify.design/ph:storefront-fill.svg?color=%23c9a227">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- ============================================================
+       EMAILJS SDK — required for sending order emails, do not remove
+       ============================================================ -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+</head>
+<body>
+
+  <a href="#main-content" class="skip-link">Skip to content</a>
+
+  <header class="navbar">
+    <div class="navbar__inner">
+      <a href="index.html" class="navbar__brand">
+        <i data-lucide="store" class="navbar__brand-icon"></i>
+        <span>Your&nbsp;Store</span>
+      </a>
+      <nav class="navbar__links" id="navLinks">
+        <a href="index.html#products">Products</a>
+        <a href="index.html#contact">Contact</a>
+        <a href="admin.html">Admin</a>
+      </nav>
+      <div class="navbar__actions">
+        <button class="icon-btn" id="darkModeToggle" aria-label="Toggle dark mode" title="Toggle theme">
+          <i data-lucide="moon"></i>
+        </button>
+        <button class="icon-btn navbar__burger" id="navBurger" aria-label="Open menu" aria-expanded="false">
+          <i data-lucide="menu"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+
+    <!-- ============================================================
+         Shown while product data is loading / if product not found
+         ============================================================ -->
+    <div id="loadingState" class="empty-state">
+      <i data-lucide="loader-circle"></i>
+      <p>Loading product…</p>
+    </div>
+
+    <div id="notFoundState" class="empty-state hidden">
+      <i data-lucide="package-search"></i>
+      <p>Product not found. <a href="index.html" style="color:var(--accent-gold-bright);">Back to store</a></p>
+    </div>
+
+    <!-- ============================================================
+         PRODUCT DETAIL — populated by js/product.js
+         ============================================================ -->
+    <section class="detail__inner hidden" id="detailSection">
+      <p class="detail__breadcrumb"><a href="index.html">Store</a> / <span id="breadcrumbName"></span></p>
+
+      <div class="detail__image-wrap">
+        <span class="badge badge--discount hidden" id="discountBadge"></span>
+        <img id="productImage" src="" alt="">
+      </div>
+
+      <div class="product-info">
+        <h1 class="detail__title" id="productName"></h1>
+        <p class="detail__desc" id="productDesc"></p>
+
+        <div class="price-block">
+          <span class="price-block__current" id="finalPrice"></span>
+          <span class="price-block__original hidden" id="originalPrice"></span>
+          <span class="price-block__save hidden" id="saveAmount"></span>
+        </div>
+
+        <div class="stock" id="stockRow">
+          <span class="stock__dot" id="stockDot"></span>
+          <span id="stockLabel">In Stock</span>
+        </div>
+
+        <div class="purchase-row">
+          <div class="qty-selector" role="group" aria-label="Quantity selector">
+            <button type="button" class="qty-selector__btn" id="qtyMinus" aria-label="Decrease quantity">−</button>
+            <input type="number" id="qtyInput" class="qty-selector__input" value="1" min="1" max="20" aria-live="polite">
+            <button type="button" class="qty-selector__btn" id="qtyPlus" aria-label="Increase quantity">+</button>
+          </div>
+
+          <a href="#orderForm" class="btn btn--primary btn--lg purchase-row__cta" id="orderNowBtn">
+            <i data-lucide="shopping-bag"></i> Order Now — <span id="livePriceHero"></span>
+          </a>
+        </div>
+
+        <div class="quick-actions">
+          <!-- ============================================================
+               WHATSAPP ORDER BUTTON
+               Replace 91XXXXXXXXXX with your own WhatsApp number (with country code, no + or spaces)
+               ============================================================ -->
+          <a href="#" target="_blank" rel="noopener noreferrer" class="btn btn--whatsapp" id="whatsappBtn">
+            <i data-lucide="message-circle"></i> Order via WhatsApp
+          </a>
+          <button type="button" class="btn btn--ghost" id="copyDetailsBtn">
+            <i data-lucide="clipboard-copy"></i> Copy Order Details
+          </button>
+        </div>
+      </div>
+
+      <!-- ============================================================
+           ORDER FORM
+           ============================================================ -->
+      <div class="form-field--full" style="grid-column: 1 / -1;">
+        <form id="orderForm" class="order-form" novalidate>
+          <h2 class="section-title" style="font-size:1.5rem; margin-bottom: 6px;">Place your order</h2>
+          <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom: 24px;">Fill in your details — we'll confirm your order by phone or email shortly.</p>
+
+          <div class="order-form__grid">
+            <div class="form-field">
+              <label for="customerName">Full Name <span class="req">*</span></label>
+              <input type="text" id="customerName" name="customerName" placeholder="e.g. Priya Sharma" required autocomplete="name">
+              <span class="form-field__error" data-error-for="customerName"></span>
+            </div>
+
+            <div class="form-field">
+              <label for="customerPhone">Phone Number <span class="req">*</span></label>
+              <input type="tel" id="customerPhone" name="customerPhone" placeholder="e.g. 98765 43210" required autocomplete="tel">
+              <span class="form-field__error" data-error-for="customerPhone"></span>
+            </div>
+
+            <div class="form-field">
+              <label for="customerEmail">Email Address <span class="req">*</span></label>
+              <input type="email" id="customerEmail" name="customerEmail" placeholder="e.g. priya@email.com" required autocomplete="email">
+              <span class="form-field__error" data-error-for="customerEmail"></span>
+            </div>
+
+            <div class="form-field">
+              <label for="productNameField">Product</label>
+              <input type="text" id="productNameField" name="productName" readonly>
+            </div>
+
+            <div class="form-field form-field--full">
+              <label for="deliveryAddress">Full Delivery Address <span class="req">*</span></label>
+              <textarea id="deliveryAddress" name="deliveryAddress" rows="3" placeholder="House no., street, locality, city, state, PIN code" required autocomplete="street-address"></textarea>
+              <span class="form-field__error" data-error-for="deliveryAddress"></span>
+            </div>
+
+            <div class="form-field">
+              <label for="formQty">Quantity <span class="req">*</span></label>
+              <div class="qty-selector qty-selector--form">
+                <button type="button" class="qty-selector__btn" id="formQtyMinus" aria-label="Decrease quantity">−</button>
+                <input type="number" id="formQty" name="quantity" value="1" min="1" max="20" required>
+                <button type="button" class="qty-selector__btn" id="formQtyPlus" aria-label="Increase quantity">+</button>
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label>Order Total</label>
+              <div class="order-total" id="orderTotal"></div>
+            </div>
+
+            <div class="form-field form-field--full">
+              <label for="additionalNotes">Additional Notes <span class="optional">(optional)</span></label>
+              <textarea id="additionalNotes" name="additionalNotes" rows="2" placeholder="Delivery instructions, preferred time slot, etc."></textarea>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn--primary btn--lg order-form__submit" id="submitOrderBtn">
+            <span class="btn__label"><i data-lucide="send"></i> Submit Order</span>
+            <span class="btn__spinner" aria-hidden="true"></span>
+          </button>
+
+          <div class="form-status" id="formStatus" role="status" aria-live="polite"></div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <div class="footer__brand">
+        <a href="index.html" class="navbar__brand">
+          <i data-lucide="store" class="navbar__brand-icon"></i>
+          <span>Your&nbsp;Store</span>
+        </a>
+        <p>Quality products, delivered with care.</p>
+      </div>
+      <div class="footer__links">
+        <h4>Explore</h4>
+        <a href="index.html#products">Products</a>
+        <a href="index.html#contact">Contact</a>
+        <a href="admin.html">Admin</a>
+      </div>
+      <div class="footer__social">
+        <h4>Follow Us</h4>
+        <div class="footer__social-icons">
+          <a href="#" aria-label="Instagram" target="_blank" rel="noopener noreferrer"><i data-lucide="instagram"></i></a>
+          <a href="#" aria-label="Facebook" target="_blank" rel="noopener noreferrer"><i data-lucide="facebook"></i></a>
+          <a href="https://wa.me/91XXXXXXXXXX" aria-label="WhatsApp" target="_blank" rel="noopener noreferrer"><i data-lucide="message-circle"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p>&copy; <span id="footerYear"></span> Your Store. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <button id="scrollTopBtn" class="scroll-top" aria-label="Scroll to top">
+    <i data-lucide="arrow-up"></i>
+  </button>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/common.js"></script>
+  <script src="js/product.js"></script>
+</body>
+</html>

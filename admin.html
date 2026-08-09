@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel | Your Store</title>
+  <meta name="robots" content="noindex, nofollow">
+
+  <link rel="icon" type="image/png" href="https://api.iconify.design/ph:storefront-fill.svg?color=%23c9a227">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- ============================================================
+       FIREBASE SDK — used only for Admin login (email/password).
+       No product data is stored in Firebase — only your admin
+       credentials live there. Product data lives in products.json
+       in this GitHub repo.
+       ============================================================ -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="navbar__inner">
+      <a href="index.html" class="navbar__brand">
+        <i data-lucide="store" class="navbar__brand-icon"></i>
+        <span>Your&nbsp;Store</span>
+      </a>
+      <nav class="navbar__links" id="navLinks">
+        <a href="index.html#products">Products</a>
+        <a href="index.html#contact">Contact</a>
+      </nav>
+      <div class="navbar__actions">
+        <button class="icon-btn" id="darkModeToggle" aria-label="Toggle dark mode" title="Toggle theme">
+          <i data-lucide="moon"></i>
+        </button>
+        <button class="icon-btn navbar__burger" id="navBurger" aria-label="Open menu" aria-expanded="false">
+          <i data-lucide="menu"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+
+    <!-- ============================================================
+         LOGIN VIEW
+         ============================================================ -->
+    <div class="admin-shell" id="loginView">
+      <div class="admin-card">
+        <h1 class="admin-login__title">Admin Login</h1>
+        <p class="admin-login__subtitle">Sign in to manage your store's products.</p>
+
+        <form id="loginForm">
+          <div class="admin-field">
+            <label for="adminEmail">Email</label>
+            <input type="email" id="adminEmail" required autocomplete="username">
+          </div>
+          <div class="admin-field">
+            <label for="adminPassword">Password</label>
+            <input type="password" id="adminPassword" required autocomplete="current-password">
+          </div>
+          <button type="submit" class="btn btn--primary btn--block" id="loginBtn">
+            <i data-lucide="log-in"></i> Sign In
+          </button>
+          <div class="admin-status" id="loginStatus"></div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         ADMIN PANEL VIEW (shown after successful login)
+         ============================================================ -->
+    <div class="admin-shell admin-shell--wide hidden" id="panelView">
+
+      <div class="admin-topbar">
+        <h1>Manage Products</h1>
+        <div style="display:flex; align-items:center; gap:14px;">
+          <span class="admin-topbar__user" id="loggedInAs"></span>
+          <button class="btn btn--ghost btn--sm" id="logoutBtn"><i data-lucide="log-out"></i> Sign Out</button>
+        </div>
+      </div>
+
+      <!-- ============================================================
+           GITHUB TOKEN — entered fresh each session, never stored in
+           the repo or sent anywhere except GitHub's own API.
+           ============================================================ -->
+      <div class="token-banner">
+        <i data-lucide="key-round"></i>
+        <span class="token-banner__text">
+          Paste your GitHub Personal Access Token to enable saving.
+          <a href="README.md" style="color:var(--accent-gold-bright);">How to create one →</a>
+        </span>
+        <input type="password" id="githubToken" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off">
+        <button class="btn btn--ghost btn--sm" id="saveTokenBtn">Save for this session</button>
+      </div>
+
+      <!-- ============================================================
+           ADD / EDIT PRODUCT FORM
+           ============================================================ -->
+      <div class="admin-card admin-product-form">
+        <h2 style="font-family: var(--font-display); font-size: 1.25rem; margin-bottom: 20px;" id="formHeading">Add New Product</h2>
+
+        <form id="productForm">
+          <input type="hidden" id="productId">
+          <div class="admin-product-form__grid">
+            <div class="admin-field">
+              <label for="pName">Product Name <span class="req">*</span></label>
+              <input type="text" id="pName" required>
+            </div>
+            <div class="admin-field">
+              <label for="pImage">Image Link <span class="req">*</span></label>
+              <input type="url" id="pImage" placeholder="https://..." required>
+            </div>
+            <div class="admin-field">
+              <label for="pPrice">Price (₹) <span class="req">*</span></label>
+              <input type="number" id="pPrice" min="0" required>
+            </div>
+            <div class="admin-field">
+              <label for="pDiscount">Discount (%)</label>
+              <input type="number" id="pDiscount" min="0" max="100" value="0">
+            </div>
+            <div class="admin-field">
+              <label for="pStock">Stock Status</label>
+              <select id="pStock">
+                <option value="in">In Stock</option>
+                <option value="out">Out of Stock</option>
+              </select>
+            </div>
+            <div class="admin-field admin-field--full">
+              <label for="pDescription">Description</label>
+              <textarea id="pDescription" rows="3"></textarea>
+            </div>
+          </div>
+
+          <div style="display:flex; gap:12px; margin-top: 8px;">
+            <button type="submit" class="btn btn--primary" id="saveProductBtn">
+              <i data-lucide="save"></i> <span id="saveProductBtnLabel">Add Product</span>
+            </button>
+            <button type="button" class="btn btn--ghost hidden" id="cancelEditBtn">Cancel Edit</button>
+          </div>
+
+          <div class="admin-status" id="productFormStatus"></div>
+        </form>
+      </div>
+
+      <!-- ============================================================
+           EXISTING PRODUCTS LIST
+           ============================================================ -->
+      <div class="admin-card">
+        <h2 style="font-family: var(--font-display); font-size: 1.25rem; margin-bottom: 20px;">Existing Products</h2>
+        <div class="admin-list" id="adminProductList">
+          <p style="color:var(--text-muted);">Loading products…</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer__bottom">
+      <p>&copy; <span id="footerYear"></span> Your Store — Admin Panel.</p>
+    </div>
+  </footer>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/common.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

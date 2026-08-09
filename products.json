@@ -1,0 +1,20 @@
+[
+  {
+    "id": "sample-product-1",
+    "name": "Sample Product One",
+    "image": "https://REPLACE-WITH-YOUR-IMAGE-LINK-1.jpg",
+    "price": 999,
+    "discount": 20,
+    "stock": "in",
+    "description": "Replace this with your real product description. This sample product exists so the store isn't empty on first load — edit or delete it from the Admin Panel once your real products are added."
+  },
+  {
+    "id": "sample-product-2",
+    "name": "Sample Product Two",
+    "image": "https://REPLACE-WITH-YOUR-IMAGE-LINK-2.jpg",
+    "price": 1499,
+    "discount": 0,
+    "stock": "out",
+    "description": "Another sample product to show how the grid looks with multiple items. Edit or delete from the Admin Panel."
+  }
+]
