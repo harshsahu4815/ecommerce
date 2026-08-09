@@ -10,9 +10,9 @@
   },
   {
     "id": "sample-product-2",
-    "name": "Sample Product Two",
-    "image": "https://REPLACE-WITH-YOUR-IMAGE-LINK-2.jpg",
-    "price": 1499,
+    "name": "powder",
+    "image": "https://tse1.mm.bing.net/th/id/OIP.Q1OnbVhNTGh1SrWnX4i72gHaHa?r=0&rs=1&pid=ImgDetMain&o=7&rm=3",
+    "price": 200,
     "discount": 0,
     "stock": "out",
     "description": "Another sample product to show how the grid looks with multiple items. Edit or delete from the Admin Panel."
