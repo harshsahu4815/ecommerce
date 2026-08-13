@@ -17,7 +17,7 @@
    ============================================================== */
 const EMAILJS_PUBLIC_KEY  = 'S85F4wdDbYYiOOe6z';   // <-- REPLACE THIS
 const EMAILJS_SERVICE_ID  = 'service_6cd6nc5';   // <-- REPLACE THIS
-const EMAILJS_TEMPLATE_ID = 'template_140l249';  // <-- REPLACE THIS
+const EMAILJS_TEMPLATE_ID = 'template_6nyb8xo';  // <-- REPLACE THIS
 
 // ============================================================
 // WHATSAPP NUMBER — replace with your own (country code, no + or spaces)
